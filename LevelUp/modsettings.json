@@ -1,0 +1,142 @@
+{
+    "Version": "1.0",
+    "Sections":
+    [       
+        {
+            "Name": "AttributePoints",
+            "Description": "Change options to customize the number of Attribute Points you gain when you level up.",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "ChangeAttributePoints",
+                    "Description": "Change the calculation of Attribute Points. Leave this option deactivated if you want another mod to handle this.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 9,
+                    "Value": 6,
+                    "Name": "MaximumAttributePoints",
+                    "Description": "The highest number you can roll for Attribute Points when you level up.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 9,
+                    "Value": 4,
+                    "Name": "MinimumAttributePoints",
+                    "Description": "The lowest number you can roll for Attribute Points when you level up.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },            
+                {
+                    "Value": false,
+                    "Name": "ActivateCurvedLeveling",
+                    "Description": "The character will gain more attribute points at low levels and then the amount will decline as the character reaches higher levels.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "AttributeMaximum",
+            "Description": "Change how high your characters Attribute Points can go.",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "ChangeAttributeMaximum",
+                    "Description": "Change the maximum your attributes can reach. Leave this option deactivated if you want another mod to handle this.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                {
+                    "Min": 50,
+                    "Max": 200,
+                    "Value": 100,
+                    "Name": "MaximumAttributePoints",
+                    "Description": "How high your characters attributes can go.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },                   
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "HitPoints",
+            "Description": "Change options to customize the number of HitPoints you gain when you level up.",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "ChangeHitPoints",
+                    "Description": "Change the calculation of HP.Leave this option deactivated if you want another mod to handle this.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                {
+                    "Options": [
+                    "Class Max HP / 2",
+                    "Class Max HP",
+                    "Class Max HP * 2"
+                    ],
+                    "Value": 1,
+                    "Name": "MaximumHitPoints",
+                    "Description": "The highest number you can roll for HP when you level up.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
+                },
+                {
+                    "Options": [
+                    "0",
+                    "Half of Maximum Hit Points",
+                    "Maximum Hit Points"
+                    ],
+                    "Value": 1,
+                    "Name": "MinimumHitPoints",
+                    "Description": "The lowest number you can roll for HP when you level up.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
+                },                                
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "LevelingSpeed",
+            "Description": "Change the speed at which you gain new levels.",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "ChangeLevelingSpeed",
+                    "Description": "Change how fast you level. Leave this option deactivated if you want another mod to handle this.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                {
+                    "Options": [
+                    "Much Slower",
+                    "Slower",
+                    "Normal",
+                    "Faster",
+                    "Much Faster"
+                    ],
+                    "Value": 2,
+                    "Name": "LevelSpeed",
+                    "Description": "How much faster or slower you level up.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
+                },
+            ],
+            "$version": "v1"
+        },       
+    ]
+}

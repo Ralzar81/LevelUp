@@ -1,0 +1,15 @@
+{
+    "ModTitle": "LevelUp Adjuster",
+    "ModVersion": "1.0",
+    "ModAuthor": "Ralzar",
+    "ContactInfo": "www.dfworskhop.net",
+    "DFUnity_Version": "0.10.17",
+    "ModDescription": "Lets you change the leveling up calculations through mod settings.",
+    "GUID": "dd2b9246-4f41-46be-859f-ce3bf6bb8473",
+    "Files": [
+        "Assets/Game/Mods/LevelUp/LevelUp.cs",
+        "Assets/Game/Mods/LevelUp/modsettings.json"
+    ],
+    "Contributes": null,
+    "Dependencies": null
+}
