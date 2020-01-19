@@ -54,10 +54,13 @@ namespace LevelUp
         
         void Start()
         {
-            if (editAP && apMin <= apMax)
+            if (editAP)
             {
                 FormulaHelper.RegisterOverride<Func<int>>(mod, "BonusPool", () =>
                 {
+                    if (apMin > apMax)
+                    { apMin = apMax; }
+
                     if (curvedAP)
                     {
                         int apAdjust = playerEntity.Level / 2;
