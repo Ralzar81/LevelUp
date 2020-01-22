@@ -42,32 +42,7 @@
                 },
             ],
             "$version": "v1"
-        },
-        {
-            "Name": "AttributeMaximum",
-            "Description": "Change how high your characters Attribute Points can go.",
-            "IsAdvanced": false,
-            "Keys":
-            [
-                {
-                    "Value": false,
-                    "Name": "ChangeAttributeMaximum",
-                    "Description": "Change the maximum your attributes can reach. Leave this option deactivated if you want another mod to handle this.",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
-                },
-                {
-                    "Min": 50,
-                    "Max": 200,
-                    "Value": 100,
-                    "Name": "MaximumAttributePoints",
-                    "Description": "How high your characters attributes can go.",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
-                },                   
-            ],
-            "$version": "v1"
-        },
+        },       
         {
             "Name": "HitPoints",
             "Description": "Change options to customize the number of HitPoints you gain when you level up.",
@@ -104,7 +79,104 @@
                     "Description": "The lowest number you can roll for HP when you level up.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
-                },                                
+                },
+                {
+                    "Value": false,
+                    "Name": "RetroactiveEnduranceBonus",
+                    "Description": "HP will allways roll Maximum. Endurance bonus will be retroactively applied to Max HP.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "                      ",
+            "Description": "",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "                         ",
+                    "Description": " ",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
+                },
+            ],
+            "$version": "v1"
+        },
+                {
+            "Name": "                       ",
+            "Description": "",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "                          ",
+                    "Description": " ",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
+                },
+            ],
+            "$version": "v1"
+        },
+                        {
+            "Name": "                        ",
+            "Description": "",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "                           ",
+                    "Description": " ",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
+                },
+            ],
+            "$version": "v1"
+        },
+                        {
+            "Name": "                         ",
+            "Description": "",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "                            ",
+                    "Description": " ",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
+                },
+            ],
+            "$version": "v1"
+        },
+                {
+            "Name": "AttributeMaximum",
+            "Description": "Change how high your characters Attribute Points can go.",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "ChangeAttributeMaximum",
+                    "Description": "Change the maximum your attributes can reach. Leave this option deactivated if you want another mod to handle this.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                {
+                    "Min": 50,
+                    "Max": 200,
+                    "Value": 100,
+                    "Name": "MaximumAttributePoints",
+                    "Description": "How high your characters attributes can go.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },                   
             ],
             "$version": "v1"
         },
@@ -137,6 +209,6 @@
                 },
             ],
             "$version": "v1"
-        },       
+        },
     ]
 }

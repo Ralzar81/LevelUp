@@ -22,6 +22,7 @@ namespace LevelUp
         static bool editMaxAP = false;
         static bool editHP = false;
         static bool editLvlSpeed = false;
+        static bool retroEnd = false;
 
         static int apMax = 6;
         static int apMin = 4;
@@ -47,6 +48,7 @@ namespace LevelUp
             editHP = settings.GetValue<bool>("HitPoints", "ChangeHitPoints");
             hpMax = settings.GetValue<int>("HitPoints", "MaximumHitPoints");
             hpMin = settings.GetValue<int>("HitPoints", "MinimumHitPoints");
+            retroEnd = settings.GetValue<bool>("HitPoints", "RetroactiveCalculation");
 
             editLvlSpeed = settings.GetValue<bool>("LevelingSpeed", "ChangeLevelingSpeed");
             lvlSpeed = settings.GetValue<int>("LevelingSpeed", "LevelSpeed");
@@ -83,18 +85,22 @@ namespace LevelUp
                 });
 
             }
-            if (editLvlSpeed && lvlSpeed != 2)
+            if (editLvlSpeed)
             {
                 FormulaHelper.RegisterOverride<Func<int, int, int>>(mod, "CalculatePlayerLevel", (int startingLevelUpSkillsSum, int currentLevelUpSkillsSum) =>
-                {
-                    lvlSpeed *= 3;
-                    return (int)Mathf.Floor((currentLevelUpSkillsSum - startingLevelUpSkillsSum + 28) / (21 - lvlSpeed));
+                {                    
+                    lvlSpeed = (lvlSpeed * 3) + 24;
+                    int calcLvl = (int)Mathf.Floor((currentLevelUpSkillsSum - startingLevelUpSkillsSum + lvlSpeed) / 15);
+                    return calcLvl;
                 });
             }
             if (editHP)
             {
                 FormulaHelper.RegisterOverride<Func<PlayerEntity, int>>(mod, "CalculateHitPointsPerLevelUp", (player) =>
                 {
+
+                    int addHitPoints = 0;
+
                     if (hpMax == 0) { hpMax = player.Career.HitPointsPerLevel / 2; }
                     else if (hpMax == 1) { hpMax = player.Career.HitPointsPerLevel; }
                     else if (hpMax == 2) { hpMax = player.Career.HitPointsPerLevel * 2; };
@@ -105,11 +111,25 @@ namespace LevelUp
 
                     int minRoll = hpMin;
                     int maxRoll = hpMax;
-                    int addHitPoints = UnityEngine.Random.Range(minRoll, maxRoll + 1);
-                    addHitPoints += FormulaHelper.HitPointsModifier(player.Stats.PermanentEndurance);
-                    if (addHitPoints < 1)
-                        addHitPoints = 1;
+
+                    if (retroEnd)
+                    {
+                        int endBonus = FormulaHelper.HitPointsModifier(player.Stats.PermanentEndurance) * player.Level;
+                        int pureMaxHP = ((maxRoll * (player.Level-1)) + 25);
+                        int newHP = pureMaxHP + endBonus;
+                        GameManager.Instance.PlayerEntity.MaxHealth = newHP;
+                        Debug.Log("retroEnd endBonus=" + endBonus.ToString() + " pureMaxHP=" + pureMaxHP.ToString());
+                        Debug.Log("retroEnd newHP=" + newHP.ToString());
+                    }
+
+                    addHitPoints = UnityEngine.Random.Range(minRoll, maxRoll + 1);
+                        addHitPoints += FormulaHelper.HitPointsModifier(player.Stats.PermanentEndurance);
+                        if (addHitPoints < 1)
+                            addHitPoints = 1;
+                    Debug.Log("minRoll=" + minRoll.ToString() + " maxRoll=" + maxRoll.ToString());
+                    Debug.Log("addHitPoints=" + addHitPoints.ToString());
                     return addHitPoints;
+                    
                 });
             }           
         }
