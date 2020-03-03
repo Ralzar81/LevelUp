@@ -179,36 +179,6 @@
                 },                   
             ],
             "$version": "v1"
-        },
-        {
-            "Name": "LevelingSpeed",
-            "Description": "Change the speed at which you gain new levels.",
-            "IsAdvanced": false,
-            "Keys":
-            [
-                {
-                    "Value": false,
-                    "Name": "ChangeLevelingSpeed",
-                    "Description": "Change how fast you level. Leave this option deactivated if you want another mod to handle this.",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
-                },
-                {
-                    "Options": [
-                    "Much Slower",
-                    "Slower",
-                    "Normal",
-                    "Faster",
-                    "Much Faster"
-                    ],
-                    "Value": 2,
-                    "Name": "LevelSpeed",
-                    "Description": "How much faster or slower you level up.",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
-                },
-            ],
-            "$version": "v1"
-        },
+        },        
     ]
 }
