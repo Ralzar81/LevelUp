@@ -21,7 +21,7 @@ namespace LevelUp
         static bool curvedAP = false;
         static bool editMaxAP = false;
         static bool editHP = false;
-        static bool editLvlSpeed = false;
+        //static bool editLvlSpeed = false;
         static bool retroEnd = false;
 
         static int apMax = 6;
@@ -29,7 +29,7 @@ namespace LevelUp
         static int maxAttribute = 100;
         static int hpMax = 3;
         static int hpMin = 2;
-        static int lvlSpeed = 2;
+        //static int lvlSpeed = 2;
 
         static PlayerEntity playerEntity = GameManager.Instance.PlayerEntity;
 
@@ -85,14 +85,15 @@ namespace LevelUp
                 });
 
             }
-            if (editLvlSpeed)
-            {
-                FormulaHelper.RegisterOverride<Func<int, int, int>>(mod, "CalculatePlayerLevel", (int startingLevelUpSkillsSum, int currentLevelUpSkillsSum) =>
-                {                    
-                    lvlSpeed = (lvlSpeed * 3) + 24;
-                    int calcLvl = (int)Mathf.Floor((currentLevelUpSkillsSum - startingLevelUpSkillsSum + lvlSpeed) / 15);
-                    return calcLvl;
-                });
+            //Level Speed feature removed until I get it to work (if ever).
+            //if (editLvlSpeed)
+            //{
+            //    FormulaHelper.RegisterOverride<Func<int, int, int>>(mod, "CalculatePlayerLevel", (int startingLevelUpSkillsSum, int currentLevelUpSkillsSum) =>
+            //    {                    
+            //        lvlSpeed = (lvlSpeed * 3) + 24;
+            //        int calcLvl = (int)Mathf.Floor((currentLevelUpSkillsSum - startingLevelUpSkillsSum + lvlSpeed) / 15);
+            //        return calcLvl;
+            //    });
             }
             if (editHP)
             {
