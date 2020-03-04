@@ -7,6 +7,7 @@ using UnityEngine;
 using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Game.Utility.ModSupport;
 using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
+using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Entity;
 using DaggerfallWorkshop.Game.Formulas;
 using System;
@@ -17,21 +18,26 @@ namespace LevelUp
     {
         static Mod mod;
 
+        static PlayerEntity playerEntity = GameManager.Instance.PlayerEntity;
+
         static bool editAP = false;
         static bool curvedAP = false;
         static bool editMaxAP = false;
         static bool editHP = false;
         //static bool editLvlSpeed = false;
         static bool retroEnd = false;
+        static bool medianHP = false;
 
         static int apMax = 6;
         static int apMin = 4;
         static int maxAttribute = 100;
         static int hpMax = 3;
         static int hpMin = 2;
-        //static int lvlSpeed = 2;
+        static int lvlSpeed = 2;
+        static int minRoll = 0;
+        static int maxRoll = 0;
 
-        static PlayerEntity playerEntity = GameManager.Instance.PlayerEntity;
+        
 
         void Awake()
         {
@@ -48,19 +54,25 @@ namespace LevelUp
             editHP = settings.GetValue<bool>("HitPoints", "ChangeHitPoints");
             hpMax = settings.GetValue<int>("HitPoints", "MaximumHitPoints");
             hpMin = settings.GetValue<int>("HitPoints", "MinimumHitPoints");
-            retroEnd = settings.GetValue<bool>("HitPoints", "RetroactiveCalculation");
+            medianHP = settings.GetValue<bool>("HitPoints", "MedianHitPoints");
+            retroEnd = settings.GetValue<bool>("HitPoints", "RetroactiveEnduranceBonus");
 
-            editLvlSpeed = settings.GetValue<bool>("LevelingSpeed", "ChangeLevelingSpeed");
-            lvlSpeed = settings.GetValue<int>("LevelingSpeed", "LevelSpeed");
+            //editLvlSpeed = settings.GetValue<bool>("LevelingSpeed", "ChangeLevelingSpeed");
+            //lvlSpeed = settings.GetValue<int>("LevelingSpeed", "LevelSpeed");
         }
         
         void Start()
         {
-            if (editAP)
+            if (editAP || curvedAP)
             {
                 FormulaHelper.RegisterOverride<Func<int>>(mod, "BonusPool", () =>
                 {
-                    if (apMin > apMax)
+                    if (!editAP)
+                    {
+                        apMax = 6;
+                        apMin = 4;
+                    }
+                    else if (apMin > apMax)
                     { apMin = apMax; }
 
                     if (curvedAP)
@@ -85,7 +97,6 @@ namespace LevelUp
                 });
 
             }
-            //Level Speed feature removed until I get it to work (if ever).
             //if (editLvlSpeed)
             //{
             //    FormulaHelper.RegisterOverride<Func<int, int, int>>(mod, "CalculatePlayerLevel", (int startingLevelUpSkillsSum, int currentLevelUpSkillsSum) =>
@@ -94,7 +105,7 @@ namespace LevelUp
             //        int calcLvl = (int)Mathf.Floor((currentLevelUpSkillsSum - startingLevelUpSkillsSum + lvlSpeed) / 15);
             //        return calcLvl;
             //    });
-            }
+            //}
             if (editHP)
             {
                 FormulaHelper.RegisterOverride<Func<PlayerEntity, int>>(mod, "CalculateHitPointsPerLevelUp", (player) =>
@@ -110,29 +121,48 @@ namespace LevelUp
                     else if (hpMin == 1) { hpMin = hpMax / 2; }
                     else if (hpMin == 2) { hpMin = hpMax; };
 
-                    int minRoll = hpMin;
-                    int maxRoll = hpMax;
+                    minRoll = hpMin;
+                    maxRoll = hpMax;
+
+                    if (medianHP)
+                    {
+                        minRoll = (hpMax + hpMin) / 2;
+                        maxRoll = (hpMax + hpMin) / 2;
+                    }
 
                     if (retroEnd)
                     {
-                        int endBonus = FormulaHelper.HitPointsModifier(player.Stats.PermanentEndurance) * player.Level;
-                        int pureMaxHP = ((maxRoll * (player.Level-1)) + 25);
-                        int newHP = pureMaxHP + endBonus;
-                        GameManager.Instance.PlayerEntity.MaxHealth = newHP;
-                        Debug.Log("retroEnd endBonus=" + endBonus.ToString() + " pureMaxHP=" + pureMaxHP.ToString());
-                        Debug.Log("retroEnd newHP=" + newHP.ToString());
-                    }
-
-                    addHitPoints = UnityEngine.Random.Range(minRoll, maxRoll + 1);
+                        EntityEffectBroker.OnNewMagicRound += RetroEndBonus_OnNewMagicRound;
+                        addHitPoints = maxRoll;
                         addHitPoints += FormulaHelper.HitPointsModifier(player.Stats.PermanentEndurance);
-                        if (addHitPoints < 1)
-                            addHitPoints = 1;
+                    }
+                    else
+                    {
+                        addHitPoints = UnityEngine.Random.Range(minRoll, maxRoll + 1);
+                        addHitPoints += FormulaHelper.HitPointsModifier(player.Stats.PermanentEndurance);
+                        if (addHitPoints < 1) { addHitPoints = 1; }
+                    }
                     Debug.Log("minRoll=" + minRoll.ToString() + " maxRoll=" + maxRoll.ToString());
                     Debug.Log("addHitPoints=" + addHitPoints.ToString());
                     return addHitPoints;
                     
                 });
             }           
+        }
+
+
+
+        private static void RetroEndBonus_OnNewMagicRound()
+        {
+            int HPmod = (int)Mathf.Floor((float)playerEntity.Stats.PermanentEndurance / 10f) - 5;
+            int endBonus = HPmod * playerEntity.Level;
+            int pureMaxHP = ((maxRoll * playerEntity.Level) + 25);
+            int newHP = pureMaxHP + endBonus;
+            GameManager.Instance.PlayerEntity.MaxHealth = newHP;
+            Debug.Log("retroEnd OnNewMagicRound Endurance = " + playerEntity.Stats.PermanentEndurance.ToString() +  "HPmod = " + HPmod.ToString() + ", endBonus = " + endBonus.ToString() + ", pureMaxHP = " + pureMaxHP.ToString());
+            Debug.Log("retroEnd OnNewMagicRound newHP=" + newHP.ToString());
+            Debug.Log("RetroEndBonus_OnNewMagicRound de-registered from OnNewMagicRound");
+            EntityEffectBroker.OnNewMagicRound -= RetroEndBonus_OnNewMagicRound;
         }
 
 

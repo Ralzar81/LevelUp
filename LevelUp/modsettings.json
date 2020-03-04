@@ -82,8 +82,15 @@
                 },
                 {
                     "Value": false,
+                    "Name": "MedianHitPoints",
+                    "Description": "Each level you will recieve the median between Maximum and Minimum HP you have set.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                {
+                    "Value": false,
                     "Name": "RetroactiveEnduranceBonus",
-                    "Description": "HP will allways roll Maximum. Endurance bonus will be retroactively applied to Max HP.",
+                    "Description": "HP will allways roll Maximum (or Median if activated). Endurance bonus will be retroactively applied to Max HP each level.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
                 },
@@ -92,22 +99,6 @@
             "$version": "v1"
         },
         {
-            "Name": "                      ",
-            "Description": "",
-            "IsAdvanced": false,
-            "Keys":
-            [
-                {
-                    "Value": false,
-                    "Name": "                         ",
-                    "Description": " ",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
-                },
-            ],
-            "$version": "v1"
-        },
-                {
             "Name": "                       ",
             "Description": "",
             "IsAdvanced": false,
@@ -179,6 +170,6 @@
                 },                   
             ],
             "$version": "v1"
-        },        
+        },
     ]
 }
