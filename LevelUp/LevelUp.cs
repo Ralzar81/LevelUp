@@ -1,5 +1,5 @@
 // Project:         LevelUp Adjuster  mod for Daggerfall Unity (http://www.dfworkshop.net)
-// Copyright:       Copyright (C) 2019 Ralzar
+// Copyright:       Copyright (C) 2020 Ralzar
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Author:          Ralzar
 
@@ -11,6 +11,9 @@ using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Entity;
 using DaggerfallWorkshop.Game.Formulas;
 using System;
+using DaggerfallWorkshop.Game.Utility;
+using DaggerfallConnect;
+using DaggerfallWorkshop.Game.UserInterfaceWindows;
 
 namespace LevelUp
 {
@@ -22,6 +25,7 @@ namespace LevelUp
 
         static bool editAP = false;
         static bool curvedAP = false;
+        static bool editStartAP = false;
         static bool editMaxAP = false;
         static bool editHP = false;
         //static bool editLvlSpeed = false;
@@ -30,6 +34,7 @@ namespace LevelUp
 
         static int apMax = 6;
         static int apMin = 4;
+        static int startAttribute = 0;
         static int maxAttribute = 100;
         static int hpMax = 3;
         static int hpMin = 2;
@@ -37,7 +42,15 @@ namespace LevelUp
         static int minRoll = 0;
         static int maxRoll = 0;
 
-        
+        [Invoke(StateManager.StateTypes.Start, 0)]
+        public static void Init(InitParams initParams)
+        {
+            mod = initParams.Mod;
+            var go = new GameObject(mod.Title);
+            go.AddComponent<LevelUp>();
+            mod.IsReady = true;
+            StartGameBehaviour.OnStartGame += StartAttrbutes_OnStartGame;
+        }
 
         void Awake()
         {
@@ -48,6 +61,9 @@ namespace LevelUp
             apMin = settings.GetValue<int>("AttributePoints", "MinimumAttributePoints");
             curvedAP = settings.GetValue<bool>("AttributePoints", "ActivateCurvedLeveling");
 
+            editStartAP = settings.GetValue<bool>("StartingAttributes", "ChangeStartingAttributes");
+            startAttribute = settings.GetValue<int>("StartingAttributes", "AdjustStartingAttributesBy");
+
             editMaxAP = settings.GetValue<bool>("AttributeMaximum", "ChangeAttributeMaximum");
             maxAttribute = settings.GetValue<int>("AttributeMaximum", "MaximumAttributePoints");
 
@@ -56,9 +72,6 @@ namespace LevelUp
             hpMin = settings.GetValue<int>("HitPoints", "MinimumHitPoints");
             medianHP = settings.GetValue<bool>("HitPoints", "MedianHitPoints");
             retroEnd = settings.GetValue<bool>("HitPoints", "RetroactiveEnduranceBonus");
-
-            //editLvlSpeed = settings.GetValue<bool>("LevelingSpeed", "ChangeLevelingSpeed");
-            //lvlSpeed = settings.GetValue<int>("LevelingSpeed", "LevelSpeed");
         }
         
         void Start()
@@ -97,15 +110,6 @@ namespace LevelUp
                 });
 
             }
-            //if (editLvlSpeed)
-            //{
-            //    FormulaHelper.RegisterOverride<Func<int, int, int>>(mod, "CalculatePlayerLevel", (int startingLevelUpSkillsSum, int currentLevelUpSkillsSum) =>
-            //    {                    
-            //        lvlSpeed = (lvlSpeed * 3) + 24;
-            //        int calcLvl = (int)Mathf.Floor((currentLevelUpSkillsSum - startingLevelUpSkillsSum + lvlSpeed) / 15);
-            //        return calcLvl;
-            //    });
-            //}
             if (editHP)
             {
                 FormulaHelper.RegisterOverride<Func<PlayerEntity, int>>(mod, "CalculateHitPointsPerLevelUp", (player) =>
@@ -165,15 +169,70 @@ namespace LevelUp
             EntityEffectBroker.OnNewMagicRound -= RetroEndBonus_OnNewMagicRound;
         }
 
-
-
-        [Invoke(StateManager.StateTypes.Game, 0)]
-        public static void Init(InitParams initParams)
+        private static void StartAttrbutes_OnStartGame(object sender, EventArgs e)
         {
-            mod = initParams.Mod;
-            GameObject GO = new GameObject("NoDiceStats");
-            GO.AddComponent<LevelUp>();
-            mod.IsReady = true;
+            int maxStat = FormulaHelper.MaxStatValue();
+
+            DaggerfallStats stats = playerEntity.Stats;
+
+            int agility = playerEntity.Stats.PermanentAgility + startAttribute;
+            int endurance = playerEntity.Stats.PermanentEndurance + startAttribute;
+            int intelligence = playerEntity.Stats.PermanentIntelligence + startAttribute;
+            int luck = playerEntity.Stats.PermanentLuck + startAttribute;
+            int personality = playerEntity.Stats.PermanentPersonality + startAttribute;
+            int speed = playerEntity.Stats.PermanentSpeed + startAttribute;
+            int strength = playerEntity.Stats.PermanentStrength + startAttribute;
+            int willpower = playerEntity.Stats.PermanentWillpower + startAttribute;
+
+            if (agility - startAttribute < 2 || endurance + startAttribute < 2 || intelligence + startAttribute < 2 || luck + startAttribute < 2 || personality + startAttribute < 2 || speed + startAttribute < 2 || strength + startAttribute < 2 || willpower + startAttribute < 2)
+            {
+                string[] messages = new string[] { "LevelUp Adjuster has changed all starting attributes by " + startAttribute.ToString() + ".", "One or more of your attributes is reduced 1 or 0, which kills you." };
+                StatusPopup(messages);
+            }
+            else if (agility + startAttribute > maxStat || endurance + startAttribute > maxStat || intelligence + startAttribute > maxStat || luck + startAttribute > maxStat || personality + startAttribute > maxStat || speed + startAttribute > maxStat || strength + startAttribute > maxStat || willpower + startAttribute > maxStat)
+            {
+                string[] messages = new string[] { "LevelUp Adjuster has changed all starting attributes by " + startAttribute.ToString() + ".", "One or more of your attributes is higher than the allowed maximum of " + maxStat.ToString() + " and will be adjusted down." };
+                StatusPopup(messages);
+
+                if (agility > maxStat) { agility = maxStat; }
+                if (endurance > maxStat) { endurance = maxStat; }
+                if (intelligence > maxStat) { intelligence = maxStat; }
+                if (luck > maxStat) { luck = maxStat; }
+                if (personality > maxStat) { personality = maxStat; }
+                if (speed > maxStat) { speed = maxStat; }
+                if (strength > maxStat) { strength = maxStat; }
+                if (willpower > maxStat) { willpower = maxStat; }
+            }
+            else
+            {
+                string[] messages = new string[] { "LevelUp Adjuster has changed all starting attributes by " + startAttribute.ToString() + "." };
+                StatusPopup(messages);
+            }
+
+            stats.SetPermanentStatValue(DFCareer.Stats.Agility, agility);
+            stats.SetPermanentStatValue(DFCareer.Stats.Endurance, endurance);
+            stats.SetPermanentStatValue(DFCareer.Stats.Intelligence, intelligence);
+            stats.SetPermanentStatValue(DFCareer.Stats.Luck, luck);
+            stats.SetPermanentStatValue(DFCareer.Stats.Personality, personality);
+            stats.SetPermanentStatValue(DFCareer.Stats.Speed, speed);
+            stats.SetPermanentStatValue(DFCareer.Stats.Strength, strength);
+            stats.SetPermanentStatValue(DFCareer.Stats.Willpower, willpower);
+        }
+
+        static DaggerfallMessageBox tempInfoBox;
+
+        public static void StatusPopup(string[] message)
+        {
+            if (tempInfoBox == null)
+            {
+                tempInfoBox = new DaggerfallMessageBox(DaggerfallUI.UIManager);
+                tempInfoBox.AllowCancel = true;
+                tempInfoBox.ClickAnywhereToClose = true;
+                tempInfoBox.ParentPanel.BackgroundColor = Color.clear;
+            }
+
+            tempInfoBox.SetText(message);
+            DaggerfallUI.UIManager.PushWindow(tempInfoBox);
         }
     }
 }

@@ -114,7 +114,7 @@
             ],
             "$version": "v1"
         },
-                        {
+        {
             "Name": "                        ",
             "Description": "",
             "IsAdvanced": false,
@@ -130,7 +130,7 @@
             ],
             "$version": "v1"
         },
-                        {
+        {
             "Name": "                         ",
             "Description": "",
             "IsAdvanced": false,
@@ -146,7 +146,32 @@
             ],
             "$version": "v1"
         },
+        {
+            "Name": "StartingAttributes",
+            "Description": "Increase or decrease your starting attributes.",
+            "IsAdvanced": false,
+            "Keys":
+            [
                 {
+                    "Value": false,
+                    "Name": "ChangeStartingAttributes",
+                    "Description": "Increase or decrease your starting attributes. Leave this option deactivated if you want another mod to handle this.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                {
+                    "Min": -50,
+                    "Max": 50,
+                    "Value": 0,
+                    "Name": "AdjustStartingAttributesBy",
+                    "Description": "Modifyer applied to all Attributes after character creation. (If any attribute hits 0, you die)",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },                   
+            ],
+            "$version": "v1"
+        },
+        {
             "Name": "AttributeMaximum",
             "Description": "Change how high your characters Attribute Points can go.",
             "IsAdvanced": false,
@@ -170,6 +195,6 @@
                 },                   
             ],
             "$version": "v1"
-        },
+        },        
     ]
 }

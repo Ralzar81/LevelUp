@@ -1,0 +1,13 @@
+{
+    "ModTitle": "LevelUp Adjuster",
+    "ModVersion": "1.3.0",
+    "ModAuthor": "Ralzar",
+    "ContactInfo": "www.dfworkshop.net",
+    "DFUnity_Version": "0.10.24",
+    "ModDescription": "Lets you change character calculations through mod settings.",
+    "GUID": "dd2b9246-4f41-46be-859f-ce3bf6bb8473",
+    "Files": [
+        "Assets/Game/Mods/LevelUp/LevelUp.cs",
+        "Assets/Game/Mods/LevelUp/modsettings.json"
+    ]
+}
