@@ -9,13 +9,6 @@
             "Keys":
             [
                 {
-                    "Value": false,
-                    "Name": "ChangeAttributePoints",
-                    "Description": "Change the calculation of Attribute Points. Leave this option deactivated if you want another mod to handle this.",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
-                },
-                {
                     "Min": 1,
                     "Max": 9,
                     "Value": 6,
@@ -49,13 +42,6 @@
             "IsAdvanced": false,
             "Keys":
             [
-                {
-                    "Value": false,
-                    "Name": "ChangeHitPoints",
-                    "Description": "Change the calculation of HP.Leave this option deactivated if you want another mod to handle this.",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
-                },
                 {
                     "Options": [
                     "Class Max HP / 2",
@@ -99,14 +85,14 @@
             "$version": "v1"
         },
         {
-            "Name": "                       ",
+            "Name": " ",
             "Description": "",
             "IsAdvanced": false,
             "Keys":
             [
                 {
                     "Value": false,
-                    "Name": "                          ",
+                    "Name": " ",
                     "Description": " ",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
@@ -115,14 +101,14 @@
             "$version": "v1"
         },
         {
-            "Name": "                        ",
+            "Name": "  ",
             "Description": "",
             "IsAdvanced": false,
             "Keys":
             [
                 {
                     "Value": false,
-                    "Name": "                           ",
+                    "Name": "  ",
                     "Description": " ",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
@@ -131,14 +117,46 @@
             "$version": "v1"
         },
         {
-            "Name": "                         ",
+            "Name": "   ",
             "Description": "",
             "IsAdvanced": false,
             "Keys":
             [
                 {
                     "Value": false,
-                    "Name": "                            ",
+                    "Name": "   ",
+                    "Description": " ",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
+                },
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "    ",
+            "Description": "",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "    ",
+                    "Description": " ",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
+                },
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "     ",
+            "Description": "",
+            "IsAdvanced": false,
+            "Keys":
+            [
+                {
+                    "Value": false,
+                    "Name": "     ",
                     "Description": " ",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextBox"
@@ -152,13 +170,6 @@
             "IsAdvanced": false,
             "Keys":
             [
-                {
-                    "Value": false,
-                    "Name": "ChangeStartingAttributes",
-                    "Description": "Increase or decrease your starting attributes. Leave this option deactivated if you want another mod to handle this.",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
-                },
                 {
                     "Min": -50,
                     "Max": 50,
@@ -177,13 +188,6 @@
             "IsAdvanced": false,
             "Keys":
             [
-                {
-                    "Value": false,
-                    "Name": "ChangeAttributeMaximum",
-                    "Description": "Change the maximum your attributes can reach. Leave this option deactivated if you want another mod to handle this.",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
-                },
                 {
                     "Min": 50,
                     "Max": 200,

@@ -28,7 +28,6 @@ namespace LevelUp
         static bool editStartAP = false;
         static bool editMaxAP = false;
         static bool editHP = false;
-        //static bool editLvlSpeed = false;
         static bool retroEnd = false;
         static bool medianHP = false;
 
@@ -36,9 +35,8 @@ namespace LevelUp
         static int apMin = 4;
         static int startAttribute = 0;
         static int maxAttribute = 100;
-        static int hpMax = 3;
-        static int hpMin = 2;
-        static int lvlSpeed = 2;
+        static int hpMaxSetting = 1;
+        static int hpMinSetting = 1;
         static int minRoll = 0;
         static int maxRoll = 0;
 
@@ -56,26 +54,30 @@ namespace LevelUp
         {
             ModSettings settings = mod.GetSettings();
 
-            editAP = settings.GetValue<bool>("AttributePoints", "ChangeAttributePoints");
             apMax = settings.GetValue<int>("AttributePoints", "MaximumAttributePoints");
             apMin = settings.GetValue<int>("AttributePoints", "MinimumAttributePoints");
             curvedAP = settings.GetValue<bool>("AttributePoints", "ActivateCurvedLeveling");
-
-            editStartAP = settings.GetValue<bool>("StartingAttributes", "ChangeStartingAttributes");
             startAttribute = settings.GetValue<int>("StartingAttributes", "AdjustStartingAttributesBy");
-
-            editMaxAP = settings.GetValue<bool>("AttributeMaximum", "ChangeAttributeMaximum");
             maxAttribute = settings.GetValue<int>("AttributeMaximum", "MaximumAttributePoints");
-
-            editHP = settings.GetValue<bool>("HitPoints", "ChangeHitPoints");
-            hpMax = settings.GetValue<int>("HitPoints", "MaximumHitPoints");
-            hpMin = settings.GetValue<int>("HitPoints", "MinimumHitPoints");
+            hpMaxSetting = settings.GetValue<int>("HitPoints", "MaximumHitPoints");
+            hpMinSetting = settings.GetValue<int>("HitPoints", "MinimumHitPoints");
             medianHP = settings.GetValue<bool>("HitPoints", "MedianHitPoints");
             retroEnd = settings.GetValue<bool>("HitPoints", "RetroactiveEnduranceBonus");
+
+            if (apMax != 6 || apMin != 4)
+                editAP = true;
+            if (startAttribute != 0)
+                editStartAP = true;
+            if (maxAttribute != 100)
+                editMaxAP = true;
+            if (hpMaxSetting != 1 || hpMinSetting != 1 || medianHP || retroEnd)
+                editHP = true;
+
         }
         
         void Start()
         {
+            Debug.Log("[LevelUp Adjuster] Loading Start().");
             if (editAP || curvedAP)
             {
                 FormulaHelper.RegisterOverride<Func<int>>(mod, "BonusPool", () =>
@@ -108,7 +110,6 @@ namespace LevelUp
                 {
                     return maxAttribute;
                 });
-
             }
             if (editHP)
             {
@@ -116,14 +117,14 @@ namespace LevelUp
                 {
 
                     int addHitPoints = 0;
+                    int hpMax = player.Career.HitPointsPerLevel;
+                    int hpMin = hpMax / 2;
 
-                    if (hpMax == 0) { hpMax = player.Career.HitPointsPerLevel / 2; }
-                    else if (hpMax == 1) { hpMax = player.Career.HitPointsPerLevel; }
-                    else if (hpMax == 2) { hpMax = player.Career.HitPointsPerLevel * 2; };
+                    if (hpMaxSetting == 0) { hpMax /= 2; }
+                    else if (hpMaxSetting == 2) { hpMax *= 2; };
 
-                    if (hpMin == 0) { hpMin = 0; }
-                    else if (hpMin == 1) { hpMin = hpMax / 2; }
-                    else if (hpMin == 2) { hpMin = hpMax; };
+                    if (hpMinSetting == 0) { hpMin = 0; }
+                    else if (hpMinSetting == 2) { hpMin = hpMax; };
 
                     minRoll = hpMin;
                     maxRoll = hpMax;
