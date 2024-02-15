@@ -15,7 +15,7 @@ using DaggerfallWorkshop.Game.Utility;
 using DaggerfallConnect;
 using DaggerfallWorkshop.Game.UserInterfaceWindows;
 
-namespace LevelUp
+namespace LevelUpAdjuster
 {
     public class LevelUp : MonoBehaviour
     {
@@ -25,7 +25,7 @@ namespace LevelUp
 
         static bool editAP = false;
         static bool curvedAP = false;
-        static bool editStartAP = false;
+        //static bool editStartAP = false;
         static bool editMaxAP = false;
         static bool editHP = false;
         static bool retroEnd = false;
@@ -47,11 +47,8 @@ namespace LevelUp
             var go = new GameObject(mod.Title);
             go.AddComponent<LevelUp>();
             mod.IsReady = true;
-            StartGameBehaviour.OnStartGame += StartAttrbutes_OnStartGame;
-        }
+            StartGameBehaviour.OnStartGame += StartAttributes_OnStartGame;
 
-        void Awake()
-        {
             ModSettings settings = mod.GetSettings();
 
             apMax = settings.GetValue<int>("AttributePoints", "MaximumAttributePoints");
@@ -66,13 +63,12 @@ namespace LevelUp
 
             if (apMax != 6 || apMin != 4)
                 editAP = true;
-            if (startAttribute != 0)
-                editStartAP = true;
+            //if (startAttribute != 0)
+            //    editStartAP = true;
             if (maxAttribute != 100)
                 editMaxAP = true;
             if (hpMaxSetting != 1 || hpMinSetting != 1 || medianHP || retroEnd)
                 editHP = true;
-
         }
         
         void Start()
@@ -101,6 +97,7 @@ namespace LevelUp
 
                     // Roll bonus pool for player to distribute
                     // Using maxBonusPool + 1 for inclusive range
+                    UnityEngine.Random.InitState(Time.frameCount);
                     return UnityEngine.Random.Range(minBonusPool, maxBonusPool + 1);
                 });
             }
@@ -159,18 +156,19 @@ namespace LevelUp
 
         private static void RetroEndBonus_OnNewMagicRound()
         {
-            int HPmod = (int)Mathf.Floor((float)playerEntity.Stats.PermanentEndurance / 10f) - 5;
+            int HPmod = (int)Mathf.Floor(playerEntity.Stats.PermanentEndurance / 10) - 5;
             int endBonus = HPmod * playerEntity.Level;
             int pureMaxHP = ((maxRoll * playerEntity.Level) + 25);
             int newHP = pureMaxHP + endBonus;
-            GameManager.Instance.PlayerEntity.MaxHealth = newHP;
+            playerEntity.MaxHealth = newHP;
+            playerEntity.CurrentHealth = newHP;
             Debug.Log("retroEnd OnNewMagicRound Endurance = " + playerEntity.Stats.PermanentEndurance.ToString() +  "HPmod = " + HPmod.ToString() + ", endBonus = " + endBonus.ToString() + ", pureMaxHP = " + pureMaxHP.ToString());
             Debug.Log("retroEnd OnNewMagicRound newHP=" + newHP.ToString());
             Debug.Log("RetroEndBonus_OnNewMagicRound de-registered from OnNewMagicRound");
             EntityEffectBroker.OnNewMagicRound -= RetroEndBonus_OnNewMagicRound;
         }
 
-        private static void StartAttrbutes_OnStartGame(object sender, EventArgs e)
+        private static void StartAttributes_OnStartGame(object sender, EventArgs e)
         {
             int maxStat = FormulaHelper.MaxStatValue();
 

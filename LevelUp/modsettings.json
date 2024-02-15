@@ -11,21 +11,21 @@
                 {
                     "Min": 1,
                     "Max": 9,
-                    "Value": 6,
-                    "Name": "MaximumAttributePoints",
-                    "Description": "The highest number you can roll for Attribute Points when you level up.",
+                    "Value": 4,
+                    "Name": "MinimumAttributePoints",
+                    "Description": "The lowest number you can roll for Attribute Points when you level up.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 },
                 {
                     "Min": 1,
                     "Max": 9,
-                    "Value": 4,
-                    "Name": "MinimumAttributePoints",
-                    "Description": "The lowest number you can roll for Attribute Points when you level up.",
+                    "Value": 6,
+                    "Name": "MaximumAttributePoints",
+                    "Description": "The highest number you can roll for Attribute Points when you level up.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
-                },            
+                },
                 {
                     "Value": false,
                     "Name": "ActivateCurvedLeveling",
